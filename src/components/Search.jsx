@@ -14,8 +14,7 @@ function Search({ searchWine }) {
 
   const getSearchData = async () => {
     try {
-      const response = await getCategories();
-      console.log(response.data, "SEARCH");
+      const response = await getCategories();     
       setSearchBarData(response.data);
     } catch (err) {
       navigate("/error");

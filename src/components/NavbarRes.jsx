@@ -60,7 +60,7 @@ function NavbarRes({ mostrarOcultarLogin }) {
            {/* add logo image */}
           </Navbar.Brand>
 
-          <Navbar.Brand href={linkHome}>RETROREALM</Navbar.Brand>
+          <Navbar.Brand href={linkHome}>RECREALM</Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"md"}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${"md"}`}

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { RingLoader } from "react-spinners";
+
 import {
   getProductsService,
   searchProductService,
@@ -17,7 +18,7 @@ import { GlobalContext } from "../context/cart.context";
 import { Button } from "react-bootstrap";
 import { AuthContext } from "../context/auth.context";
 import ToastMessage from "../components/ToastMessage";
-
+import  { getGamesList } from "../services/globalAPI"
 function Home() {
   const [showToastCart, setShowToastCart] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -30,6 +31,7 @@ function Home() {
       setShowToastCart(true);
       setIsAdding(false);
     } catch (error) {
+      console.log(error)
       navigate("/error");
     }
   };
@@ -46,11 +48,18 @@ function Home() {
 
   const getData = async () => {
     try {
-      const response = await getProductsService();
-      setAllProducts(response.data);
-      setFilteredProducts(response.data);
+      //const response = await getProductsService();
+      // setAllProducts(response.data);
+      // setFilteredProducts(response.data);
+      const responseGamesList= await getGamesList()
+      console.log("responseGamesList",responseGamesList.data.results)
+      setAllProducts(responseGamesList.data.results);
+      setFilteredProducts(responseGamesList.data.results);
       setIsLoading(false);
+
+    
     } catch (error) {
+      console.log(error)
       navigate("/error");
     }
   };
@@ -88,12 +97,12 @@ function Home() {
         <div className="grid-products">
           {filteredProducts.map((eachProduct) => {
             return (
-              <div key={eachProduct._id}>
+              <div key={eachProduct.id}>
                 <CardProducts cardProduct={eachProduct} />
                 <div>
                   <Button
                     className="btn-añadir-home"
-                    id={eachProduct._id}
+                    id={eachProduct.id}
                     onClick={handleAddCart}
                     disabled={isAdding || !isLoggedIn ? true : false}
                   >
