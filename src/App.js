@@ -22,10 +22,10 @@ import Footer from "./components/Footer";
 
 
 function App() {
-  //para Offcanvas
+  //for Offcanvas
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    console.log("entra handleClose")
+   
     setShow(false);
   }
  

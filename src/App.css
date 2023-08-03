@@ -1,8 +1,7 @@
-/* color marron-dorado #857550 */
+/* color azul oscuro #005f73 */
 /*color marron dorado light #b7aa8d*/
 /* color footer #857550 */
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&display=swap");
-
+@@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 html {
   position: relative;
   min-height: 100%;
@@ -16,8 +15,7 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-
-  background-color: #857550 !important;
+  background-color: #005f73 !important;
 }
 
 .App {
@@ -58,7 +56,7 @@ h3 {
 }
 .edit-link {
   text-decoration: none;
-  background-color: #857550;
+  background-color: #005f73;
   border: none;
   color: white;
   padding: 5px 10px;
@@ -135,10 +133,16 @@ h3 {
 .navbar {
   /*imagen de logo*/
   padding: 0;
-  background-color: #857550;
+  background-color: #005f73;
+
+}
+.navbar-brand{
+  font-family: 'VT323', monospace;
+  font-weight: 800;
 }
 .navbar a {
   color: white;
+  font-family: 'VT323', monospace;
 }
 
 .bi-search {
@@ -184,7 +188,7 @@ h3 {
 .btn-cart {
   margin: 10px;
   width: 40px;
-  background-color: #857550;
+  background-color: #005f73;
   border-color: cornsilk;
   font-weight: bolder;
 }
@@ -253,7 +257,7 @@ h3 {
   gap: 50px;
 }
 .btn-añadir Button {
-  background-color: #857550;
+  background-color: #005f73;
   border-color: cornsilk;
 
   font-weight: bolder;
@@ -340,7 +344,7 @@ h1 {
   align-items: center;
 }
 .btn-añadir-home {
-  background-color: #857550;
+  background-color: #005f73;
   border-color: cornsilk;
   font-weight: bolder;
   margin-top: 30px;
@@ -352,7 +356,7 @@ h1 {
   border: rgb(165, 142, 42);
 }
 .dropdown-toggle {
-  background-color: #857550 !important;
+  background-color: #005f73 !important;
   border: cornsilk;
 }
 .navbar-toggler {
@@ -361,6 +365,6 @@ h1 {
 
 .btn.disabled,
 .btn:disabled {
-  background-color: #857550 !important;
+  background-color: #005f73 !important;
   border: none;
 }

@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-
+import { useNavigate } from "react-router-dom";
+import { getCategories } from "../services/category.services";
 function Search({ searchWine }) {
   const [searchInput, setSearchInput] = useState("");
   const [dropdownSearch, setDropDownSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchBarData, setSearchBarData] = useState([]);
+  const navigate = useNavigate();
+
+  const getSearchData = async () => {
+    try {
+      const response = await getCategories();
+      console.log(response.data, "SEARCH");
+      setSearchBarData(response.data);
+    } catch (err) {
+      navigate("/error");
+    }
+  };
+  useEffect(() => {
+    getSearchData();
+  }, []);
 
   const handleSearch = (e) => {
     setSearchInput(e.target.value);
@@ -14,7 +31,6 @@ function Search({ searchWine }) {
   };
 
   const handleSearchChange = async (searchDrop) => {
-    console.log(searchDrop);
     setDropDownSearch(searchDrop);
     searchWine(searchInput, searchDrop);
   };
@@ -27,7 +43,7 @@ function Search({ searchWine }) {
           value={searchInput}
           type="text"
           onChange={handleSearch}
-          placeholder="Busque el producto que desee"
+          placeholder="Busque el juego que desee"
         />
         <DropdownButton
           align="end"
@@ -35,46 +51,17 @@ function Search({ searchWine }) {
           id="dropdown-menu-align-end"
           className="btn-categoria"
         >
-          <Dropdown.Item
-            value={"Tinto"}
-            onClick={() => {
-              handleSearchChange("Tinto");
-            }}
-          >
-            Tinto
-          </Dropdown.Item>
-          <Dropdown.Item
-            value={"Blanco"}
-            onClick={() => {
-              handleSearchChange("Blanco");
-            }}
-          >
-            Blanco
-          </Dropdown.Item>
-          <Dropdown.Item
-            value={"Rosado"}
-            onClick={() => {
-              handleSearchChange("Rosado");
-            }}
-          >
-            Rosado
-          </Dropdown.Item>
-          <Dropdown.Item
-            value={"Espumoso"}
-            onClick={() => {
-              handleSearchChange("Espumoso");
-            }}
-          >
-            Espumoso
-          </Dropdown.Item>
-          <Dropdown.Item
-            value={"Palo Cortado"}
-            onClick={() => {
-              handleSearchChange("Palo Cortado");
-            }}
-          >
-            Palo Cortado
-          </Dropdown.Item>
+          {searchBarData.map((eachElement) => (
+            <Dropdown.Item key={eachElement._id}
+              value={eachElement.name}
+              onClick={() => {
+                handleSearchChange(eachElement.name);
+              }}
+            >            
+              {eachElement.name}
+            </Dropdown.Item>
+          ))}
+
           <Dropdown.Divider />
           <Dropdown.Item
             value=""

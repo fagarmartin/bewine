@@ -10,34 +10,64 @@ import {
   editAdminService,
 } from "../../services/admin.services";
 import { detailProductService } from "../../services/products.services";
-
+import { getCategories } from "../../services/category.services";
+import { getPlatforms } from "../../services/platform.services";
 function AdminEdit() {
   const params = useParams();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  // const [errorMessage, setErrorMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
   const [formInputs, setFormInputs] = useState({
     name: "",
     description: "",
     image: "",
     price: 1,
-    tipo: "",
-    bodega: "",
+    // category: [],
+    company: "",
     stock: 1,
+    platform:[]
   });
+  const [isLoading, setIsLoading] = useState(true);
+  // const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [isLoadingMulti, setIsLoadingMulti] = useState(true);
+  const [multiSelect, setMultiSelect] = useState([]);
+  const [formInputMulti, setFormInputMulti] = useState([]);
+  const [multiSelectPlatform, setMultiSelectPlatform] = useState([]);
+
+  const getMultiData = async () => {
+    try {
+      const response = await getCategories();
+      setMultiSelect(response.data);
+
+      setIsLoadingMulti(false);
+    } catch (err) {
+      navigate("/error");
+    }
+  };
+  const handleMultiSelect = (e) =>
+    setFormInputs({
+      ...formInputs,
+      [e.target.name]: Array.from(
+        e.target.selectedOptions,
+        (option) => option.id
+      ),
+    });
   useEffect(() => {
     getData();
+    getMultiData();
   }, []);
 
   const getData = async () => {
     try {
       setIsLoading(true);
+
       const response = await detailProductService(params.id);
 
       setFormInputs(response.data);
+      //setFormInputMulti();
+      const responsePlatforms = await getPlatforms();
+      setMultiSelectPlatform(responsePlatforms.data);
       setIsLoading(false);
     } catch (error) {
       navigate("/error");
@@ -58,6 +88,7 @@ function AdminEdit() {
 
       setImageUrl(response.data.image); // manda la url de la imagen al front end, usando imageUrl
       setFormInputs({ ...formInputs, image: response.data.image });
+
       setIsUploading(false);
     } catch (error) {
       navigate("/error");
@@ -93,7 +124,7 @@ function AdminEdit() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingMulti) {
     return (
       <div className="spinner">
         <RingLoader />
@@ -115,7 +146,7 @@ function AdminEdit() {
         <Card.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Imagen</Form.Label>
+              <Form.Label>Image</Form.Label>
               <Form.Control
                 type="file"
                 onChange={handleFileUpload}
@@ -130,7 +161,7 @@ function AdminEdit() {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -139,7 +170,17 @@ function AdminEdit() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Descripción:</Form.Label>
+              <Form.Label>Year</Form.Label>
+              <Form.Control
+                type="text"
+                name="year"
+                value={formInputs.year}
+                onChange={handleInputsChange}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Description:</Form.Label>
               <Form.Control
                 as="textarea"
                 name="description"
@@ -150,16 +191,16 @@ function AdminEdit() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Bodega</Form.Label>
+              <Form.Label>Company</Form.Label>
               <Form.Control
                 type="text"
-                name="bodega"
-                value={formInputs.bodega}
+                name="company"
+                value={formInputs.company}
                 onChange={handleInputsChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Precio</Form.Label>
+              <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
                 name="price"
@@ -168,18 +209,51 @@ function AdminEdit() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
+              <Form.Label>Choose categories:</Form.Label>
               <Form.Select
-                name="tipo"
+                name="category"
                 aria-label="Default select example"
-                value={formInputs.tipo}
-                onChange={handleInputsChange}
+                value={formInputs.category}
+                onChange={handleMultiSelect}
+                required
+                multiple
               >
-                <option>Seleccione un tipo de vino:</option>
-                <option value="Tinto">Tinto</option>
-                <option value="Blanco">Blanco</option>
-                <option value="Rosado">Rosado</option>
-                <option value="Palo Cortado">Palo Cortado</option>
-                <option value="Espumoso">Espumoso</option>
+                {multiSelect.map((eachElement) => {
+                  return (
+                    <option
+                      key={eachElement._id}
+                      name={eachElement.name}
+                      id={eachElement._id}
+                      value={eachElement._id}
+                    >
+                      {eachElement.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Choose categories:</Form.Label>
+              <Form.Select
+                name="platform"
+                aria-label="Default select example"
+                value={formInputs.platform}
+                onChange={handleMultiSelect}
+                required
+                multiple
+              >
+                {multiSelectPlatform.map((eachElement) => {
+                  return (
+                    <option
+                      key={eachElement._id}
+                      name={eachElement.name}
+                      id={eachElement._id}
+                      value={eachElement._id}
+                    >
+                      {eachElement.name}
+                    </option>
+                  );
+                })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">

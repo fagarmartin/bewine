@@ -1,6 +1,7 @@
 import service from "./config.services";
 
 const createAdminService = (newProduct) => {
+  console.log("NEW PRODUCT",newProduct)
   return service.post("/admin/create", newProduct);
 };
 

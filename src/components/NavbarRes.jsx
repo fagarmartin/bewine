@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth.context";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import ironWineImg from "../assets/ironwine.png";
 import { GlobalContext } from "../context/cart.context";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -58,15 +57,10 @@ function NavbarRes({ mostrarOcultarLogin }) {
       <Navbar key={"md"} expand={"md"}>
         <Container fluid>
           <Navbar.Brand href={linkHome}>
-            <img
-              src={ironWineImg}
-              alt="logo"
-              width={60}
-              className="d-inline-block align-top"
-            />
+           {/* add logo image */}
           </Navbar.Brand>
 
-          <Navbar.Brand href={linkHome}>IRONWINE</Navbar.Brand>
+          <Navbar.Brand href={linkHome}>RETROREALM</Navbar.Brand>
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"md"}`} />
           <Navbar.Offcanvas
             id={`offcanvasNavbar-expand-${"md"}`}

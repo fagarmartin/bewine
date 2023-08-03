@@ -30,7 +30,6 @@ function Home() {
       setShowToastCart(true);
       setIsAdding(false);
     } catch (error) {
-      
       navigate("/error");
     }
   };
@@ -85,7 +84,6 @@ function Home() {
         <Search searchWine={searchWine} />
       </div>
 
-      <ControlledCarousel />
       <section id="products">
         <div className="grid-products">
           {filteredProducts.map((eachProduct) => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RingLoader } from "react-spinners";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -6,6 +6,8 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { createAdminService } from "../../services/admin.services";
 import { uploadImageService } from "../../services/upload.services"; //cloudinary
+import { getCategories } from "../../services/category.services";
+import { getPlatforms } from "../../services/platform.services";
 
 function AdminCreate() {
   const navigate = useNavigate();
@@ -14,26 +16,46 @@ function AdminCreate() {
     description: "",
     image: "",
     price: 1,
-    tipo: "",
-    bodega: "",
+    category: [],
+    company: "",
     stock: 1,
+    year: "",
+    platform: [],
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [imageUrl, setImageUrl] = useState(""); //subir imagen
   const [isUploading, setIsUploading] = useState(false); //subir imagen
+  const [isLoadingMulti, setIsLoadingMulti] = useState(true);
+  const [multiSelect, setMultiSelect] = useState([]);
+  const [multiSelectPlatform, setMultiSelectPlatform] = useState([]);
+  
+  const getMultiData = async () => {
+    try {
+      const response = await getCategories();
+      setMultiSelect(response.data);
+      const responsePlatforms = await getPlatforms();
+      setMultiSelectPlatform(responsePlatforms.data);
+      setIsLoadingMulti(false);
+    } catch (err) {
+      navigate("/error");
+    }
+  };
+  useEffect(() => {
+    getMultiData();
+  }, []);
 
   const handleFileUpload = async (e) => {
     if (!e.target.files[0]) {
-      return; // si no hay seleccionado ningun archivo
+      return; // if no file selected
     }
     try {
       setIsUploading(true);
-      const uploadData = new FormData(); // formato en el que tiene q ser mandado al BE
-      uploadData.append("image", e.target.files[0]); // image tiene que ser el mismo nombre q en el middleware uploader.single("image")
+      const uploadData = new FormData(); // format to be sent to BD
+      uploadData.append("image", e.target.files[0]); // same image name as in  middleware uploader.single("image")
 
       const response = await uploadImageService(uploadData);
-      setImageUrl(response.data.image); // manda la url de la imagen al front end, usando imageUrl
+      setImageUrl(response.data.image); // sends the url of the image to the front end, using imageUrl
       setFormInputs({ ...formInputs, image: response.data.image });
       setIsUploading(false);
     } catch (error) {
@@ -43,7 +65,16 @@ function AdminCreate() {
   };
 
   const handleInputsChange = (e) =>
-    setFormInputs({ ...formInputs, [e.target.name]: e.target.value }); // actualiza el estado de la propiedad que cambie en ese momento
+    setFormInputs({ ...formInputs, [e.target.name]: e.target.value }); // updates state of the property that changes in that moment
+
+  const handleMultiSelect = (e) =>
+    setFormInputs({
+      ...formInputs,
+      [e.target.name]: Array.from(
+        e.target.selectedOptions,
+        (option) => option.id
+      ),
+    });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +93,7 @@ function AdminCreate() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingMulti) {
     return (
       <div className="spinner">
         <RingLoader />
@@ -77,14 +108,14 @@ function AdminCreate() {
           <img src={imageUrl} alt="preview-img" width={200} />
         </div>
       ) : null}
-      <p>{formInputs.tipo}</p>
+      <p>{formInputs.category}</p>
 
       <Card className="admin-create-form">
-        <h3>Crear Producto</h3>
+        <h3>Create product</h3>
         <Card.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Imagen</Form.Label>
+              <Form.Label>Image</Form.Label>
               <Form.Control
                 type="file"
                 onChange={handleFileUpload}
@@ -100,7 +131,7 @@ function AdminCreate() {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
                 name="name"
@@ -110,7 +141,17 @@ function AdminCreate() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Descripción:</Form.Label>
+              <Form.Label>Year</Form.Label>
+              <Form.Control
+                type="text"
+                name="year"
+                value={formInputs.year}
+                onChange={handleInputsChange}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Description:</Form.Label>
               <Form.Control
                 as="textarea"
                 name="description"
@@ -122,17 +163,17 @@ function AdminCreate() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Bodega</Form.Label>
+              <Form.Label>Company</Form.Label>
               <Form.Control
                 type="text"
-                name="bodega"
-                value={formInputs.bodega}
+                name="company"
+                value={formInputs.company}
                 onChange={handleInputsChange}
                 required
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Precio</Form.Label>
+              <Form.Label>Price</Form.Label>
               <Form.Control
                 type="number"
                 name="price"
@@ -142,19 +183,51 @@ function AdminCreate() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
+              <Form.Label>Choose categories:</Form.Label>
               <Form.Select
-                name="tipo"
+                name="category"
                 aria-label="Default select example"
-                value={formInputs.tipo}
-                onChange={handleInputsChange}
+                value={formInputs.category}
+                onChange={handleMultiSelect}
                 required
+                multiple
               >
-                <option value="">Seleccione un tipo de vino:</option>
-                <option value="Tinto">Tinto</option>
-                <option value="Blanco">Blanco</option>
-                <option value="Rosado">Rosado</option>
-                <option value="Palo Cortado">Palo Cortado</option>
-                <option value="Espumoso">Espumoso</option>
+                {multiSelect.map((eachElement) => {
+                  return (
+                    <option
+                      key={eachElement._id}
+                      name={eachElement.name}
+                      id={eachElement._id}
+                      value={eachElement._id}
+                    >
+                      {eachElement.name}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Choose platforms:</Form.Label>
+              <Form.Select
+                name="platform"
+                aria-label="Default select example"
+                value={formInputs.platform}
+                onChange={handleMultiSelect}
+                required
+                multiple
+              >
+                {multiSelectPlatform.map((eachElement) => {
+                  return (
+                    <option
+                      key={eachElement._id}
+                      name={eachElement.name}
+                      id={eachElement._id}
+                      value={eachElement._id}
+                    >
+                      {eachElement.name}
+                    </option>
+                  );
+                })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3">
@@ -174,7 +247,7 @@ function AdminCreate() {
                 type="submit"
                 disabled={isLoading}
               >
-                Crear Producto
+                Create Product
               </Button>
             </div>
           </Form>
