@@ -3,6 +3,13 @@ const key = process.env.REACT_APP_RAWG_KEY;
 const axiosRawg = axios.create({
   baseURL: "https://api.rawg.io/api",
 });
+axiosRawg.interceptors.request.use((config) => {
+  const authToken = localStorage.getItem("authToken");
+  if (authToken) {
+    config.headers.authorization = `Bearer ${authToken}`;
+  }
+  return config;
+});
 const getGamesList = async () => {
   return axiosRawg.get("/games?key=" + key);
 };
