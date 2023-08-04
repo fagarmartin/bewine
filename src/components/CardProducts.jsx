@@ -3,22 +3,15 @@ import Card from "react-bootstrap/Card";
 import { Button } from "react-bootstrap";
 import { GlobalContext } from "../context/cart.context";
 import { useContext, useState } from "react";
+import StarRatings from "react-star-ratings";
 
 function CardProducts(props) {
   const { name, background_image, rating, id } = props.cardProduct;
   const [isAdding, setIsAdding] = useState(false);
   const navigate = useNavigate();
   const { addProductCart } = useContext(GlobalContext);
-  const handleAddCart = async (e) => {
-    try {
-      setIsAdding(true);
-      await addProductCart(e.target.id);
-      setIsAdding(false);
-    } catch (error) {
-      
-      navigate("/error");
-    }
-  };
+  
+
 
   return (
     <Card style={{ width: "20rem" }}>
@@ -27,7 +20,16 @@ function CardProducts(props) {
 
         <Card.Body>
           <Card.Title>{name}</Card.Title>
-          <Card.Text>{rating} </Card.Text>
+        
+          <StarRatings
+          rating={rating}
+          starRatedColor="#f5d742"
+          starDimension="20px"
+          starSpacing="5px"
+          numberOfStars={5}
+          name='rating'
+          
+        />
         </Card.Body>
       </Link>
     </Card>

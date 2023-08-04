@@ -131,7 +131,7 @@ function Home() {
             );
           })}
         </div>
-        <Button onClick={handleNavigationButton}>Next Page</Button>
+        <Button onClick={handleNavigationButton}>Load more</Button>
       </section>
 
       <ToastMessage
