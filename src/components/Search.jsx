@@ -5,17 +5,17 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../services/category.services";
+import { getGenresList } from "../services/globalAPI";
 function Search({ searchWine }) {
   const [searchInput, setSearchInput] = useState("");
   const [dropdownSearch, setDropDownSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [searchBarData, setSearchBarData] = useState([]);
   const navigate = useNavigate();
-
   const getSearchData = async () => {
     try {
-      const response = await getCategories();     
-      setSearchBarData(response.data);
+      const responseGenreList = await getGenresList();
+      setSearchBarData(responseGenreList.data.results);
     } catch (err) {
       navigate("/error");
     }
@@ -51,12 +51,13 @@ function Search({ searchWine }) {
           className="btn-categoria"
         >
           {searchBarData.map((eachElement) => (
-            <Dropdown.Item key={eachElement._id}
+            <Dropdown.Item
+              key={eachElement.id}
               value={eachElement.name}
               onClick={() => {
                 handleSearchChange(eachElement.name);
               }}
-            >            
+            >
               {eachElement.name}
             </Dropdown.Item>
           ))}

@@ -2,23 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { RingLoader } from "react-spinners";
 
-import {
-  getProductsService,
-  searchProductService,
-} from "../services/products.services";
 import { useEffect } from "react";
 import CardProducts from "../components/CardProducts";
-import ControlledCarousel from "../components/ControlledCarousel";
-import CardGroup from "react-bootstrap/CardGroup";
+import { getGamesList } from "../services/globalAPI";
 import Search from "../components/Search";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+
 import { GlobalContext } from "../context/cart.context";
 import { Button } from "react-bootstrap";
 import { AuthContext } from "../context/auth.context";
 import ToastMessage from "../components/ToastMessage";
-import  { getGamesList } from "../services/globalAPI"
+
 function Home() {
   const [showToastCart, setShowToastCart] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -31,7 +24,7 @@ function Home() {
       setShowToastCart(true);
       setIsAdding(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       navigate("/error");
     }
   };
@@ -39,7 +32,6 @@ function Home() {
   const navigate = useNavigate;
   const [allProducts, setAllProducts] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
@@ -48,28 +40,28 @@ function Home() {
 
   const getData = async () => {
     try {
-      //const response = await getProductsService();
-      // setAllProducts(response.data);
-      // setFilteredProducts(response.data);
-      const responseGamesList= await getGamesList()
-      console.log("responseGamesList",responseGamesList.data.results)
+      const responseGamesList = await getGamesList();
+     
       setAllProducts(responseGamesList.data.results);
       setFilteredProducts(responseGamesList.data.results);
-      setIsLoading(false);
 
-    
+      setIsLoading(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       navigate("/error");
     }
   };
 
   const searchWine = (search, searchDropdown) => {
-    let newSearch = allProducts.filter((eachProduct) => {
+    let newSearch = allProducts.filter((eachProduct) => { 
       if (
-        eachProduct.name.toLowerCase().includes(search) &&
-        (eachProduct.tipo === searchDropdown || searchDropdown === "")
+        (eachProduct.genres.filter((e) => e.name === searchDropdown).length > //searches if the array of object genres has the search in it
+          0 ||
+          searchDropdown === "") &&
+        eachProduct.name.toLowerCase().includes(search)
       ) {
+        return true;
+      } else if (eachProduct.genres.includes(searchDropdown)) {
         return true;
       } else {
         return false;
