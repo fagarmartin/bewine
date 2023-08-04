@@ -6,10 +6,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
 import { getCategories } from "../services/category.services";
 import { getGenresList } from "../services/globalAPI";
-function Search({ searchWine }) {
+function Search({ searchGames }) {
   const [searchInput, setSearchInput] = useState("");
   const [dropdownSearch, setDropDownSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const [searchBarData, setSearchBarData] = useState([]);
   const navigate = useNavigate();
   const getSearchData = async () => {
@@ -26,12 +25,12 @@ function Search({ searchWine }) {
 
   const handleSearch = (e) => {
     setSearchInput(e.target.value);
-    searchWine(e.target.value, dropdownSearch);
+    searchGames(e.target.value, dropdownSearch);
   };
 
   const handleSearchChange = async (searchDrop) => {
     setDropDownSearch(searchDrop);
-    searchWine(searchInput, searchDrop);
+    searchGames(searchInput, searchDrop);
   };
 
   return (
@@ -46,7 +45,7 @@ function Search({ searchWine }) {
         />
         <DropdownButton
           align="end"
-          title={dropdownSearch === "" ? "Todas" : dropdownSearch}
+          title={dropdownSearch === "" ? "All" : dropdownSearch}
           id="dropdown-menu-align-end"
           className="btn-categoria"
         >
@@ -70,7 +69,7 @@ function Search({ searchWine }) {
               handleSearchChange("");
             }}
           >
-            Todas
+            All
           </Dropdown.Item>
         </DropdownButton>
       </InputGroup>

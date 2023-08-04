@@ -9,5 +9,16 @@ const getGamesList = async () => {
 const getGenresList = async () => {
   return axiosRawg.get("/genres?key=" + key);
 };
-
-export { getGamesList, getGenresList };
+const getGamesByGenderList = async (genre) => {
+  return axiosRawg.get("/games?key=" + key+"&genres="+genre+"&page=2");
+};
+const getGamesByGenderAndNameList = async (genre,name) => {
+  return axiosRawg.get("/games?key=" + key+"&genres="+genre+"&search="+name);
+};
+const getGamesByName = async (name) => {
+  return axiosRawg.get("/games?key=" + key+"&search="+name);
+};
+const getNavigationPage= async (url)=>{
+  return axiosRawg.get(url);
+}
+export { getGamesList, getGenresList,getGamesByGenderList,getGamesByGenderAndNameList,getGamesByName,getNavigationPage };

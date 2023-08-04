@@ -4,7 +4,13 @@ import { RingLoader } from "react-spinners";
 
 import { useEffect } from "react";
 import CardProducts from "../components/CardProducts";
-import { getGamesList } from "../services/globalAPI";
+import {
+  getGamesByGenderAndNameList,
+  getGamesByGenderList,
+  getGamesByName,
+  getGamesList,
+  getNavigationPage,
+} from "../services/globalAPI";
 import Search from "../components/Search";
 
 import { GlobalContext } from "../context/cart.context";
@@ -17,6 +23,10 @@ function Home() {
   const [isAdding, setIsAdding] = useState(false);
   const { addProductCart } = useContext(GlobalContext);
   const { isLoggedIn } = useContext(AuthContext);
+  const [navigationPages, setNavigationPages] = useState({
+    next: "",
+    previous: "",
+  });
   const handleAddCart = async (e) => {
     try {
       setIsAdding(true);
@@ -38,37 +48,67 @@ function Home() {
     getData();
   }, []);
 
+  const setStateNavigationPages=(data)=>{
+    setNavigationPages({
+      next: data.next,
+      previous: data.previous,
+    });
+  }
   const getData = async () => {
     try {
       const responseGamesList = await getGamesList();
-     
+
       setAllProducts(responseGamesList.data.results);
       setFilteredProducts(responseGamesList.data.results);
-
+      setStateNavigationPages(responseGamesList.data)
+     
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       navigate("/error");
     }
   };
+  const handleNavigationButton = async () => {
+    try{
 
-  const searchWine = (search, searchDropdown) => {
-    let newSearch = allProducts.filter((eachProduct) => { 
-      if (
-        (eachProduct.genres.filter((e) => e.name === searchDropdown).length > //searches if the array of object genres has the search in it
-          0 ||
-          searchDropdown === "") &&
-        eachProduct.name.toLowerCase().includes(search)
-      ) {
-        return true;
-      } else if (eachProduct.genres.includes(searchDropdown)) {
-        return true;
-      } else {
-        return false;
+      const responseGamesList = await getNavigationPage(navigationPages.next);
+     
+      const clonedList=[...allProducts]
+      clonedList.push(...responseGamesList.data.results)
+      
+      setAllProducts(clonedList);
+      setFilteredProducts(clonedList);
+      setStateNavigationPages(responseGamesList.data)
+    }
+    catch(error)
+    {
+      navigate("/error")
+    }
+  };
+
+  const searchGames = async (search, searchDropdown) => {
+    try {
+      console.log("searchDropdown", searchDropdown);
+      if (search === "") {
+        //only genre
+        const response = await getGamesByGenderList(
+          searchDropdown.toLowerCase()
+        );
+
+        setFilteredProducts(response.data.results);
+      } else if (searchDropdown !== "") {
+        const response = await getGamesByGenderAndNameList(
+          searchDropdown.toLowerCase(),
+          search
+        ); //by name and genre
+        setFilteredProducts(response.data.results);
+      } else if (searchDropdown === "") {
+        const response = await getGamesByName(search); //by name
+
+        setFilteredProducts(response.data.results);
       }
-    });
-    setFilteredProducts(newSearch);
-    return newSearch;
+    } catch (err) {
+      navigate("/error");
+    }
   };
 
   if (isLoading) {
@@ -82,7 +122,7 @@ function Home() {
   return (
     <div className="container-all container-responsive">
       <div>
-        <Search searchWine={searchWine} />
+        <Search searchGames={searchGames} />
       </div>
 
       <section id="products">
@@ -105,6 +145,7 @@ function Home() {
             );
           })}
         </div>
+        <Button onClick={handleNavigationButton}>Next Page</Button>
       </section>
 
       <ToastMessage
