@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { RingLoader } from "react-spinners";
+import { PuffLoader } from "react-spinners";
 
 import { useEffect } from "react";
 import CardProducts from "../components/CardProducts";
@@ -109,7 +109,7 @@ function Home() {
   if (isLoading) {
     return (
       <div className="spinner">
-        <RingLoader />
+        <PuffLoader color={"#005f73"} />
       </div>
     );
   }

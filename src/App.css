@@ -28,6 +28,7 @@ footer {
 
 .spinner {
   color: #660033;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;

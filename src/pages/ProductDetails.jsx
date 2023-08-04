@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { detailProductService } from "../services/products.services";
-import { RingLoader } from "react-spinners";
+import { PuffLoader } from "react-spinners";
 import {
   addWishListService,
   isInWishList,
@@ -103,7 +103,7 @@ function ProductDetails() {
   if (isLoading) {
     return (
       <div className="spinner">
-        <RingLoader />
+        <PuffLoader color={"#005f73"} />
       </div>
     );
   }
