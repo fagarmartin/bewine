@@ -23,7 +23,7 @@ function CardProducts(props) {
   return (
     <Card style={{ width: "20rem" }}>
       <Link to={`/products/${id}/details`}>
-        <Card.Img variant="top" src={background_image} width={40} />
+        <Card.Img variant="top" src={background_image} />
 
         <Card.Body>
           <Card.Title>{name}</Card.Title>

@@ -19,7 +19,7 @@ function OffcanvasLoginSignup({ show, handleClose, mostrarOcultarLogin,setShow }
       backdrop={"truenpm"}
     >
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>CUENTA EN IRONWINE</Offcanvas.Title>
+        <Offcanvas.Title>CUENTA EN RECREALM</Offcanvas.Title>
       </Offcanvas.Header>
 
       <Offcanvas.Body>

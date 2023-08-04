@@ -93,7 +93,7 @@ function ProductDetails() {
     try {
       const response = await getGameDetails(params.id);
       setProductDetail(response.data);
-      console.log(response)
+      console.log(response);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -108,26 +108,22 @@ function ProductDetails() {
     );
   }
 
-  const { name, background_image,  platforms, description_raw } =
-    productDetail;
+  const { name, background_image, platforms, description_raw } = productDetail;
   return (
     <div>
       <div className="container-details">
         <h3>{name}</h3>
-        <img src={background_image} alt="vino" />
-        
+
+        <div className="img-details">
+          <img src={background_image} alt="vino" />
+        </div>
         <p>{description_raw}</p>
         <h4>Platforms</h4>
-       <ul className="platforms-list">
-
-        {
-          platforms.map((eachPlatform)=>{
-              return (
-                <li>{eachPlatform.platform.name}</li>
-              )
-          })
-        }
-       </ul>
+        <ul className="platforms-list">
+          {platforms.map((eachPlatform) => {
+            return <li>{eachPlatform.platform.name}</li>;
+          })}
+        </ul>
 
         <div className="btn-añadir">
           {!isWishList && isLoggedIn && user.role !== "admin" && (
@@ -136,13 +132,6 @@ function ProductDetails() {
           {isWishList && isLoggedIn && user.role !== "admin" && (
             <Button onClick={handleRemoveWish}>
               Quitar de Lista de Deseos
-            </Button>
-          )}
-          {isLoggedIn && user.role !== "admin" && isLoggedIn ? (
-            <Button onClick={handleAddCart}>Añadir a Carrito</Button>
-          ) : (
-            <Button onClick={handleAddCart} disabled>
-              Añadir a Carrito
             </Button>
           )}
         </div>

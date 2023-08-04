@@ -41,7 +41,7 @@ function Search({ searchGames }) {
           value={searchInput}
           type="text"
           onChange={handleSearch}
-          placeholder="Busque el juego que desee"
+          placeholder="Search games"
         />
         <DropdownButton
           align="end"

@@ -126,16 +126,7 @@ function Home() {
             return (
               <div key={eachProduct.id}>
                 <CardProducts cardProduct={eachProduct} />
-                <div>
-                  <Button
-                    className="btn-añadir-home"
-                    id={eachProduct.id}
-                    onClick={handleAddCart}
-                    disabled={isAdding || !isLoggedIn ? true : false}
-                  >
-                    Añadir a Carrito
-                  </Button>
-                </div>
+                
               </div>
             );
           })}
