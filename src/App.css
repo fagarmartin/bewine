@@ -280,6 +280,12 @@ h3 {
   margin: auto;
   margin-top: 20px;
 }
+    .platforms-list{
+      display: flex;
+      flex-wrap: wrap;
+    justify-content: space-around;
+      list-style: none;
+    }
 
 .cart-carrito {
   margin: 40px;

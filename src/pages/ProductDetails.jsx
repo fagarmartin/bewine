@@ -15,6 +15,7 @@ import Comentario from "../components/Comentario";
 import { AuthContext } from "../context/auth.context";
 import { GlobalContext } from "../context/cart.context";
 import RandomCard from "../components/RandomCard";
+import { getGameDetails } from "../services/globalAPI";
 
 function ProductDetails() {
   const { addProductCart } = useContext(GlobalContext);
@@ -47,7 +48,8 @@ function ProductDetails() {
       setShowToast(true);
       getIsInWishList();
     } catch (error) {
-      navigate("/error");
+      console.log(error);
+      // navigate("/error");
     }
   };
   const handleAddCart = async () => {
@@ -56,7 +58,8 @@ function ProductDetails() {
       setMsgToast("Producto añadido a su carrito");
       setShowToastCart(true);
     } catch (error) {
-      navigate("/error");
+      console.log(error);
+      //navigate("/error");
     }
   };
 
@@ -65,12 +68,11 @@ function ProductDetails() {
       const isInWL = await isInWishList(params.id);
 
       if (isInWL) {
-       
         setIsWishList(isInWL.data);
       }
     } catch (error) {
-    
-      navigate("/error");
+      console.log(error);
+      //navigate("/error");
     }
   };
 
@@ -89,11 +91,13 @@ function ProductDetails() {
 
   const getData = async () => {
     try {
-      const response = await detailProductService(params.id);
+      const response = await getGameDetails(params.id);
       setProductDetail(response.data);
+      console.log(response)
       setIsLoading(false);
     } catch (error) {
-      navigate("/error");
+      console.log(error);
+      // navigate("/error");
     }
   };
   if (isLoading) {
@@ -104,18 +108,26 @@ function ProductDetails() {
     );
   }
 
-  const { name, image, price, tipo, bodega, description } = productDetail;
+  const { name, background_image,  platforms, description_raw } =
+    productDetail;
   return (
     <div>
       <div className="container-details">
         <h3>{name}</h3>
-        <img src={image} alt="vino" />
-        <p>
-          {price} <span>€</span>{" "}
-        </p>
-        <p>{description}</p>
-        <h6>{tipo}</h6>
-        <h5>{bodega}</h5>
+        <img src={background_image} alt="vino" />
+        
+        <p>{description_raw}</p>
+        <h4>Platforms</h4>
+       <ul className="platforms-list">
+
+        {
+          platforms.map((eachPlatform)=>{
+              return (
+                <li>{eachPlatform.platform.name}</li>
+              )
+          })
+        }
+       </ul>
 
         <div className="btn-añadir">
           {!isWishList && isLoggedIn && user.role !== "admin" && (
@@ -123,7 +135,6 @@ function ProductDetails() {
           )}
           {isWishList && isLoggedIn && user.role !== "admin" && (
             <Button onClick={handleRemoveWish}>
-             
               Quitar de Lista de Deseos
             </Button>
           )}
@@ -139,7 +150,7 @@ function ProductDetails() {
         <Comentario />
         <hr />
 
-        <RandomCard />
+        {/* <RandomCard /> */}
       </div>
       <ToastMessage
         setShow={setShowToast}

@@ -28,4 +28,7 @@ const getGamesByName = async (name) => {
 const getNavigationPage= async (url)=>{
   return axiosRawg.get(url);
 }
-export { getGamesList, getGenresList,getGamesByGenderList,getGamesByGenderAndNameList,getGamesByName,getNavigationPage };
+const getGameDetails =async (id)=>{
+  return axiosRawg.get("/games/"+id+"?key=" + key+"&search=");
+}
+export { getGamesList, getGenresList,getGamesByGenderList,getGamesByGenderAndNameList,getGamesByName,getNavigationPage,getGameDetails };
