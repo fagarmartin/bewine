@@ -48,47 +48,43 @@ function Home() {
     getData();
   }, []);
 
-  const setStateNavigationPages=(data)=>{
+  const setStateNavigationPages = (data) => {
     setNavigationPages({
       next: data.next,
       previous: data.previous,
     });
-  }
+  };
   const getData = async () => {
     try {
       const responseGamesList = await getGamesList();
 
       setAllProducts(responseGamesList.data.results);
       setFilteredProducts(responseGamesList.data.results);
-      setStateNavigationPages(responseGamesList.data)
-     
+      setStateNavigationPages(responseGamesList.data);
+
       setIsLoading(false);
     } catch (error) {
       navigate("/error");
     }
   };
   const handleNavigationButton = async () => {
-    try{
-
+    try {
       const responseGamesList = await getNavigationPage(navigationPages.next);
-     
-      const clonedList=[...allProducts]
-      clonedList.push(...responseGamesList.data.results)
-      
+
+      const clonedList = [...allProducts];
+      clonedList.push(...responseGamesList.data.results);
+
       setAllProducts(clonedList);
       setFilteredProducts(clonedList);
-      setStateNavigationPages(responseGamesList.data)
-    }
-    catch(error)
-    {
-      navigate("/error")
+      setStateNavigationPages(responseGamesList.data);
+    } catch (error) {
+      navigate("/error");
     }
   };
 
   const searchGames = async (search, searchDropdown) => {
     try {
-      console.log("searchDropdown", searchDropdown);
-      if (search === "") {
+      if (search === "" && searchDropdown !== "") {
         //only genre
         const response = await getGamesByGenderList(
           searchDropdown.toLowerCase()
@@ -103,7 +99,6 @@ function Home() {
         setFilteredProducts(response.data.results);
       } else if (searchDropdown === "") {
         const response = await getGamesByName(search); //by name
-
         setFilteredProducts(response.data.results);
       }
     } catch (err) {
