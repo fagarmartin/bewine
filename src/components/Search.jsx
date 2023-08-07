@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "../services/category.services";
 import { getGenresList } from "../services/globalAPI";
 function Search({ searchGames }) {
   const [searchInput, setSearchInput] = useState("");

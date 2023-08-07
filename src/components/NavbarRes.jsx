@@ -75,8 +75,8 @@ function NavbarRes({ mostrarOcultarLogin }) {
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 {((isLoggedIn && user.role !== "admin") || !isLoggedIn) && (
-                  <Nav.Link as={Link} to={linkHome}>
-                    Home
+                  <Nav.Link as={Link} to={"/genres"}>
+                    Genres
                   </Nav.Link>
                 )}
                 {!isLoggedIn && (

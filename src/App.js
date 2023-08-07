@@ -7,9 +7,7 @@ import NotFound from "./pages/error/NotFound";
 import NavbarRes from "./components/NavbarRes";
 import IsPrivate from "./components/auth/IsPrivate";
 import Profile from "./pages/Profile";
-import Cart from "./pages/Cart";
 import Home from "./pages/Home";
-
 import ProductDetails from "./pages/ProductDetails";
 import AdminHome from "./pages/admin/AdminHome";
 import AdminEdit from "./pages/admin/AdminEdit";
@@ -19,6 +17,8 @@ import IsPrivateAdmin from "./components/auth/IsPrivateAdmin";
 import PaymentSuccess from "./components/payment/PaymentSuccess";
 import OffcanvasLoginSignup from "./components/OffcanvasLoginSignup";
 import Footer from "./components/Footer";
+import Genres from "./pages/Genres";
+
 
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-      <NavbarRes mostrarOcultarLogin={mostrarOcultarLogin} />
+       <NavbarRes mostrarOcultarLogin={mostrarOcultarLogin} /> 
     
       <Routes>       
         <Route
@@ -48,8 +48,8 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {/* cart */}
-        <Route path="/cart" element={<IsPrivate><Cart /></IsPrivate>} />
-        
+        <Route path="/genres" element={<Genres/>} />
+        <Route path="/genres/:genre" element={<Genres/>} />
         <Route path="/products/:id/details" element={<ProductDetails />} />
 
         {/* admin */}

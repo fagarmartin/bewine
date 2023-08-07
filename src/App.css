@@ -1,7 +1,7 @@
 /* color azul oscuro #005f73 */
 /*color marron dorado light #b7aa8d*/
 /* color footer #857550 */
-@@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=REM:ital,wght@0,300;0,500;1,500&display=swap');
 html {
   position: relative;
   min-height: 100%;
@@ -23,7 +23,7 @@ footer {
 .App {
   text-align: center;
   height: 100%;
-  font-family: "DM Serif Display";
+  font-family: 'REM', sans-serif;
 }
 
 .spinner {
@@ -137,12 +137,12 @@ h3 {
 
 }
 .navbar-brand{
-  font-family: 'VT323', monospace;
+  font-family: 'REM', sans-serif;
   font-weight: 800;
 }
 .navbar a {
   color: white;
-  font-family: 'VT323', monospace;
+  font-family: 'REM', sans-serif;
 }
 
 .bi-search {
@@ -376,4 +376,36 @@ h1 {
 .btn:disabled {
   background-color: #005f73 !important;
   border: none;
+}
+/*GENRES PAGE*/
+.genres-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap:50px;
+  margin-top: 50px;
+ 
+}
+.genres-container a{
+  color:#001219;
+  text-decoration: none;
+  font-family: 'REM', sans-serif;
+ 
+}
+.genre-card {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+ 
+  
+
 }
