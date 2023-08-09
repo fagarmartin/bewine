@@ -79,7 +79,7 @@ function NavbarRes({ mostrarOcultarLogin }) {
                     Genres
                   </Nav.Link>
                 )}
-                {!isLoggedIn && (
+                {/* {!isLoggedIn && (
                   <Nav.Link as={Link}>
                     <Button onClick={handleLogin} variant="outline-warning">
                       Login/Signup
@@ -110,7 +110,7 @@ function NavbarRes({ mostrarOcultarLogin }) {
                       {totalProductsCart}
                     </span>
                   </Nav.Link>
-                )}
+                )} */}
                
               </Nav>
 

@@ -57,7 +57,8 @@ const [rawDataGames,setRawDataGames]=useState([])
 
       setIsLoading(false);
     } catch (error) {
-      navigate("/error");
+     // navigate("/error");
+     console.log(error)
     }
   };
   const navigationButton = async () => {

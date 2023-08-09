@@ -16,7 +16,9 @@ function Products({filteredProducts,navigationButton}) {
         );
       })}
     </div>
+    <div className="load-more">
    <Button onClick={navigationButton}  >Load more</Button>
+   </div>
   </section>
   )
 }
