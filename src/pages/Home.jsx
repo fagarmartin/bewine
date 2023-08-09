@@ -17,6 +17,7 @@ import { GlobalContext } from "../context/cart.context";
 import { Button } from "react-bootstrap";
 import { AuthContext } from "../context/auth.context";
 import ToastMessage from "../components/ToastMessage";
+import Products from "../components/Products";
 
 function Home() {
   const [showToastCart, setShowToastCart] = useState(false);
@@ -27,17 +28,7 @@ function Home() {
     next: "",
     previous: "",
   });
-  const handleAddCart = async (e) => {
-    try {
-      setIsAdding(true);
-      await addProductCart(e.target.id);
-      setShowToastCart(true);
-      setIsAdding(false);
-    } catch (error) {
-      console.log(error);
-      navigate("/error");
-    }
-  };
+const [rawDataGames,setRawDataGames]=useState([])
 
   const navigate = useNavigate;
   const [allProducts, setAllProducts] = useState("");
@@ -60,6 +51,8 @@ function Home() {
 
       setAllProducts(responseGamesList.data.results);
       setFilteredProducts(responseGamesList.data.results);
+      console.log("rawDataGames",responseGamesList)
+      setRawDataGames(responseGamesList.data)
       setStateNavigationPages(responseGamesList.data);
 
       setIsLoading(false);
@@ -67,13 +60,13 @@ function Home() {
       navigate("/error");
     }
   };
-  const handleNavigationButton = async () => {
+  const navigationButton = async () => {
     try {
+     
       const responseGamesList = await getNavigationPage(navigationPages.next);
-
       const clonedList = [...allProducts];
       clonedList.push(...responseGamesList.data.results);
-
+      console.log("clonedList,",clonedList)
       setAllProducts(clonedList);
       setFilteredProducts(clonedList);
       setStateNavigationPages(responseGamesList.data);
@@ -84,23 +77,10 @@ function Home() {
 
   const searchGames = async (search, searchDropdown) => {
     try {
-      if (search === "" && searchDropdown !== "") {
-        //only genre
-        const response = await getGamesByGenderList(
-          searchDropdown.toLowerCase()
-        );
-
-        setFilteredProducts(response.data.results);
-      } else if (searchDropdown !== "") {
-        const response = await getGamesByGenderAndNameList(
-          searchDropdown.toLowerCase(),
-          search
-        ); //by name and genre
-        setFilteredProducts(response.data.results);
-      } else if (searchDropdown === "") {
+     
         const response = await getGamesByName(search); //by name
         setFilteredProducts(response.data.results);
-      }
+      
     } catch (err) {
       navigate("/error");
     }
@@ -120,19 +100,7 @@ function Home() {
         <Search searchGames={searchGames} />
       </div>
 
-      <section id="products">
-        <div className="grid-products">
-          {filteredProducts.map((eachProduct) => {
-            return (
-              <div key={eachProduct.id}>
-                <CardProducts cardProduct={eachProduct} />
-                
-              </div>
-            );
-          })}
-        </div>
-        <Button onClick={handleNavigationButton}>Load more</Button>
-      </section>
+   <Products filteredProducts={filteredProducts}  navigationButton={navigationButton}/>
 
       <ToastMessage
         setShow={setShowToastCart}

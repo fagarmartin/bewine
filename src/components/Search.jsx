@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Dropdown, DropdownButton } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
@@ -42,35 +40,7 @@ function Search({ searchGames }) {
           onChange={handleSearch}
           placeholder="Search games"
         />
-        <DropdownButton
-          align="end"
-          title={dropdownSearch === "" ? "All" : dropdownSearch}
-          id="dropdown-menu-align-end"
-          className="btn-categoria"
-        >
-          {searchBarData.map((eachElement) => (
-            <Dropdown.Item
-              key={eachElement.id}
-              value={eachElement.name}
-              onClick={() => {
-                handleSearchChange(eachElement.name);
-              }}
-            >
-              {eachElement.name}
-            </Dropdown.Item>
-          ))}
-
-          <Dropdown.Divider />
-          <Dropdown.Item
-            value=""
-            eventKey="4"
-            onClick={() => {
-              handleSearchChange("");
-            }}
-          >
-            All
-          </Dropdown.Item>
-        </DropdownButton>
+        
       </InputGroup>
     </div>
   );

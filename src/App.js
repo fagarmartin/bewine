@@ -18,6 +18,7 @@ import PaymentSuccess from "./components/payment/PaymentSuccess";
 import OffcanvasLoginSignup from "./components/OffcanvasLoginSignup";
 import Footer from "./components/Footer";
 import Genres from "./pages/Genres";
+import GenreGames from "./pages/GenreGames";
 
 
 
@@ -49,7 +50,7 @@ function App() {
 
         {/* cart */}
         <Route path="/genres" element={<Genres/>} />
-        <Route path="/genres/:genre" element={<Genres/>} />
+        <Route path="/genres/:genre" element={<GenreGames/>} />
         <Route path="/products/:id/details" element={<ProductDetails />} />
 
         {/* admin */}

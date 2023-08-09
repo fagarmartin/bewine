@@ -16,7 +16,7 @@ function Genres() {
     try {
       setIsLoading(true);
       const response = await getGenresList();
-      console.log(response.data.results);
+      //console.log(response.data.results);
       setGenreList(response.data.results);
       setIsLoading(false);
     } catch (error) {
@@ -32,7 +32,10 @@ function Genres() {
   }
 
   return (
+   <div className="container">
+    <h2>Genres</h2>
     <div className="genres-container">
+       
       {genreList.map((eachElement) => {
         return (
           <div
@@ -48,6 +51,7 @@ function Genres() {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }

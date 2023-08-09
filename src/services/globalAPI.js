@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const key = process.env.REACT_APP_RAWG_KEY;
 const axiosRawg = axios.create({
   baseURL: "https://api.rawg.io/api",
@@ -10,6 +11,7 @@ axiosRawg.interceptors.request.use((config) => {
   }
   return config;
 });
+
 const getGamesList = async () => {
   return axiosRawg.get("/games?key=" + key);
 };
@@ -31,4 +33,6 @@ const getNavigationPage= async (url)=>{
 const getGameDetails =async (id)=>{
   return axiosRawg.get("/games/"+id+"?key=" + key+"&search=");
 }
+
+
 export { getGamesList, getGenresList,getGamesByGenderList,getGamesByGenderAndNameList,getGamesByName,getNavigationPage,getGameDetails };
