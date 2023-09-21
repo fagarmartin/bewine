@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { PuffLoader } from "react-spinners";
-
 import { useEffect } from "react";
 import CardProducts from "../components/CardProducts";
 import {

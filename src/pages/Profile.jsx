@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { getHistorialService } from "../services/historial.services";
 import { useNavigate } from "react-router-dom";
-import { RingLoader } from "react-spinners";
+import { PuffLoader, RingLoader } from "react-spinners";
 import CardProducts from "../components/CardProducts";
 import { CardGroup } from "react-bootstrap";
 import { allwishListService } from "../services/wishlist.services";
@@ -36,8 +36,8 @@ function Profile() {
   if (isLoading) {
     return (
       <div className="spinner">
-        <RingLoader />
-      </div>
+      <PuffLoader color={"#005f73"} />
+    </div>
     );
   }
   return (
